@@ -1,0 +1,261 @@
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button> -->
+
+<div align="center" class="container" style="padding-top:100px;">
+
+  <mat-vertical-stepper [linear]="isLinear" *ngIf="!desktop" #stepper class="register-container">
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Register an Account</ng-template>
+        <div class="form-group">
+          <mat-form-field appearance="standard">
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email">
+            <mat-icon matSuffix style="margin: 0px 8px;"></mat-icon>
+          </mat-form-field>
+          <div class="text-danger validation-text-margin"
+            *ngIf="firstFormGroup.controls.email.invalid && (firstFormGroup.controls.email.dirty && firstFormGroup.controls.email.touched)">
+            <div *ngIf="firstFormGroup.controls.email.errors.email">
+              <small>Please enter a valid email</small>
+            </div>
+            <div *ngIf="firstFormGroup.controls.email.errors.required">
+              <small>This field is required</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="standard">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-icon matSuffix style="margin: 0px 8px;"></mat-icon>
+          </mat-form-field>
+          <div
+            *ngIf="firstFormGroup.controls.name.invalid && (firstFormGroup.controls.name.dirty && firstFormGroup.controls.name.touched)">
+            <div *ngIf="this.firstFormGroup.controls.name.errors.required">
+              <small>This field is required</small>
+            </div>
+          </div>
+        </div>
+        <div formGroupName="pwSet">
+          <div class="form-group">
+            <mat-form-field appearance="standard">
+              <mat-label>Password</mat-label>
+              <input formControlName="pw" matInput [type]="hide ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            <div class="text-danger"
+              *ngIf="firstFormGroup.controls.pwSet['controls'].pw.invalid && (firstFormGroup.controls.pwSet['controls'].pw.dirty && firstFormGroup.controls.pwSet['controls'].pw.touched)">
+              <small>Password must be at least 6 letters</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="standard">
+              <mat-label>Confirm Password</mat-label>
+              <input formControlName="cfmPw" matInput [type]="hide2 ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            <div class="text-danger"
+              *ngIf="firstFormGroup.controls.pwSet.hasError('notmatch') && (firstFormGroup.controls.pwSet['controls'].cfmPw.dirty && firstFormGroup.controls.pwSet['controls'].cfmPw.touched)">
+              <small *ngIf="firstFormGroup.controls.pwSet.hasError('notmatch')">
+                Passwords do not match!
+              </small>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button mat-button (click)="register(stepper)">Register</button>
+        </div>
+      </form>
+    </mat-step>
+    <!-- #docregion label -->
+    <mat-step [stepControl]="secondFormGroup" label="Set your user profile">
+      <!-- #enddocregion label -->
+      <form [formGroup]="secondFormGroup">
+        <div class="form-group">
+          <mat-form-field appearance="standard" style="width:100%;max-width:300px;">
+            <mat-label>Age</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let a of age" value="{{a}}">{{a}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="standard" style="width:100%;max-width:300px;">
+            <mat-label>Purpose of investment</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let investment of purposeOfInvestment" value="{{investment}}">{{investment}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="standard" style="width:100%;max-width:300px">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" class="example-right-align">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+        
+        </div>
+        <div class="form-group">
+          <label>Preferred industries to invest in</label>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-4" *ngFor="let industry of preferredIndustry; let i = index" align="center">
+                <div class="custom-card" id="preferred-industry-{{i}}" (click)="selectIndustry(i, industry)">
+                  {{industry}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button mat-button (click)="saveProfile(stepper)">Next</button>
+          <button mat-button matStepperNext>Skip</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>Registration Complete!</p>
+      <div>
+        <button mat-button routerLink="/Dashboard">Continue to Dashboard</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>
+
+  <mat-horizontal-stepper [linear]="isLinear" *ngIf="desktop"  #stepper class="register-container">
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Register an Account</ng-template>
+        <div class="form-group">
+          <mat-form-field appearance="standard">
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email">
+            <mat-icon matSuffix style="margin: 0px 8px;"></mat-icon>
+          </mat-form-field>
+          <div class="text-danger validation-text-margin"
+            *ngIf="firstFormGroup.controls.email.invalid && (firstFormGroup.controls.email.dirty && firstFormGroup.controls.email.touched)">
+            <div *ngIf="firstFormGroup.controls.email.errors.email">
+              <small>Please enter a valid email</small>
+            </div>
+            <div *ngIf="firstFormGroup.controls.email.errors.required">
+              <small>This field is required</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="standard">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-icon matSuffix style="margin: 0px 8px;"></mat-icon>
+          </mat-form-field>
+          <div
+            *ngIf="firstFormGroup.controls.name.invalid && (firstFormGroup.controls.name.dirty && firstFormGroup.controls.name.touched)">
+            <div *ngIf="this.firstFormGroup.controls.name.errors.required">
+              <small>This field is required</small>
+            </div>
+          </div>
+        </div>
+        <div formGroupName="pwSet">
+          <div class="form-group">
+            <mat-form-field appearance="standard">
+              <mat-label>Password</mat-label>
+              <input formControlName="pw" matInput [type]="hide ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            <div class="text-danger"
+              *ngIf="firstFormGroup.controls.pwSet['controls'].pw.invalid && (firstFormGroup.controls.pwSet['controls'].pw.dirty && firstFormGroup.controls.pwSet['controls'].pw.touched)">
+              <small>Password must be at least 6 letters</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="standard">
+              <mat-label>Confirm Password</mat-label>
+              <input formControlName="cfmPw" matInput [type]="hide2 ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            <div class="text-danger"
+              *ngIf="firstFormGroup.controls.pwSet.hasError('notmatch') && (firstFormGroup.controls.pwSet['controls'].cfmPw.dirty && firstFormGroup.controls.pwSet['controls'].cfmPw.touched)">
+              <small *ngIf="firstFormGroup.controls.pwSet.hasError('notmatch')">
+                Passwords do not match!
+              </small>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button mat-button (click)="register(stepper)">Register</button>
+        </div>
+      </form>
+    </mat-step>
+    <!-- #docregion label -->
+    <mat-step [stepControl]="secondFormGroup" label="Set your user profile">
+      <!-- #enddocregion label -->
+      <form [formGroup]="secondFormGroup">
+        <div class="form-group">
+          <mat-form-field appearance="standard" style="width:100%;max-width:300px;">
+            <mat-label>Age</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let a of age" value="{{a}}">{{a}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="standard" style="width:100%;max-width:300px;">
+            <mat-label>Purpose of investment</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let investment of purposeOfInvestment" value="{{investment}}">{{investment}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="standard" style="width:100%;max-width:300px">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" class="example-right-align">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+        
+        </div>
+        <div class="form-group">
+          <label>Preferred industries to invest in</label>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-4" *ngFor="let industry of preferredIndustry; let i = index" align="center">
+                <div class="custom-card" id="preferred-industry-{{i}}" (click)="selectIndustry(i, industry)">
+                  {{industry}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button mat-button (click)="saveProfile(stepper)">Next</button>
+          <button mat-button matStepperNext>Skip</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>Registration Complete!</p>
+      <div>
+        <button mat-button routerLink="/Dashboard">Continue to Dashboard</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
+

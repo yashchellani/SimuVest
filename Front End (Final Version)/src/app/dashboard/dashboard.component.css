@@ -1,0 +1,22 @@
+.custom-card{
+    background-color:white;
+    padding:30px;
+    border-radius: 10px;
+    box-shadow:0 0 5px rgba(0,0,0,0.4);
+    cursor: pointer;
+    margin:0px 65px;
+    padding-top:80px;
+    height:350px;
+    width:300px;
+    max-width:100%;
+    margin:0;
+    margin-bottom:20px;
+    border : 5px solid white;
+}
+
+.a:hover{
+    border:5px solid #fec54f;
+}
+.b:hover{
+    border:5px solid #3dea37;
+}

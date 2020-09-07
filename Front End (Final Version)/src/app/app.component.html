@@ -1,0 +1,9 @@
+<div id="navbar" class="custom-navbar" *ngIf="this.router.url!='/Login' && this.router.url!='/Register'&& this.router.url!= '' " align="right">
+        <span class="pr-5"><a routerLink="/Dashboard" style="color:white;text-transform: uppercase;letter-spacing: 2px;">Home</a></span>
+        <span class="pr-5"><a routerLink="/Stocks" style="color:white;text-transform: uppercase;letter-spacing: 2px;">Start investing</a></span>
+        <span class="pr-5"><a routerLink="/Index" style="color:white;text-transform: uppercase;letter-spacing: 2px;">My Index</a></span>
+        <span class="pr-5"><a style="color:white;text-transform: uppercase;letter-spacing: 2px;cursor:pointer" (click)="logout()">Logout</a></span>
+
+</div>
+
+<router-outlet></router-outlet>

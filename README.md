@@ -1,6 +1,5 @@
 # SimuVest 
-
-# # The user-friendly investment simulator.
+### The user-friendly investment simulator.
 
 SimuVest was created with the aim of helping newcomers become more confident in their investing skills 
 and helping relatively inexperienced investors try out new investment strategies without risking their investments. 
